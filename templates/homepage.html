@@ -1,9 +1,12 @@
 <html>
     <head>
-        <title>SnD 2.0</title>
+        <title>CN Project</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,300i,700,700i" rel="stylesheet">
-        <link href="../static/style.css" rel="stylesheet">
+        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+        <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
         <script src="https://cdn.jsdelivr.net/npm/typeit@7.0.4/dist/typeit.min.js"></script>
     </head>
     <body>
@@ -13,12 +16,12 @@
                 <span></span>
                 <span></span>
                 <span></span>
-                <h3 class="heading" id="heading">DDOS Detector</h3>
+                <h3 class="heading" id="heading">Attack Detector Tool</h3>
                 <div class="container">
-                    <button type="button" id="start-sniffer">START</button>
+                    <button type="button" id="start">START</button>
                     <button type="button" id="find-attackers">FIND ATTACKERS</button>
-                    <button type="button" id="toggle-info">TOGGLE INFO</button>
-                    <button type="button" id="stop-sniffer">STOP</button>
+                    <!-- <button type="button" id="toggle-info">INFO</button> -->
+                    <button type="button" id="stop">STOP</button>
                 </div>
             </div>
         </header>
@@ -32,12 +35,9 @@
                 </div>
             </div>
         </div>
-        <br>
-        <div class="container" id="info" style="display: none;">
-            <div class="content">
-                <label>Interface</label>
-                <input type="text" value="{{ config.0 }}" class="input-text" disabled>
-            </div>
+        <!-- <br> -->
+        <div class="container" id="info" >
+            
             <div class="content">
                 <label>Current IP</label>
                 <input type="text" value="{{ config.1 }}" class="input-text" disabled>
@@ -66,32 +66,31 @@
             </div>
         </div>
         <div style="margin-bottom: 1.5rem;">
-            <label style="margin-left: 5%;">TERMINAL LOGS</label>
+            <label style="margin-left: 5%;">TERMINAL</label>
             <textarea disabled id="logs" class="logs-area"></textarea>
         </div>
         <div style="margin-bottom: 1.5rem;">
             <label style="margin-left: 5%;">NETWORK ACTIVITIES</label>
             <textarea disabled id="activities" style="height: 30vh;" class="logs-area"></textarea>
         </div>
-        
         <script type="text/javascript">
         var ws = new WebSocket('ws://' + document.domain + ':' + location.port + '/ws');
         var _element = document.getElementById('activities');
         var _element2 = document.getElementById('logs');
         var _element3 = document.getElementById('attackers-modal');
         var _element4 = document.getElementById('close-modal');
-        var _startButton = document.getElementById('start-sniffer');
-        var _stopButton = document.getElementById('stop-sniffer');
+        var _startButton = document.getElementById('start');
+        var _stopButton = document.getElementById('stop');
         var _fattackers = document.getElementById('find-attackers');
-        document.getElementById('toggle-info').onclick = function () {
-            var _temp = document.getElementById('info');
-            if (_temp.hasAttribute('style')) {
-                _temp.removeAttribute('style');
-            }
-            else {
-                _temp.setAttribute('style', 'display: none;');
-            }
-        };
+        // document.getElementById('toggle-info').onclick = function () {
+        //     var _temp = document.getElementById('info');
+        //     if (_temp.hasAttribute('style')) {
+        //         _temp.removeAttribute('style');
+        //     }
+        //     else {
+        //         _temp.setAttribute('style', 'display: none;');
+        //     }
+        // };
         ws.onmessage = function (event) {
             switch (String(event.data).slice(0,5)) {
                 case 'LOG::':

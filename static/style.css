@@ -1,6 +1,6 @@
 html, body {
-	background-color: #000;
-	color: #aafffc;
+	background-color: #071A52;
+	color: #178978;
 	font-family: 'Titillium Web', sans-serif;
 	text-align: left;
 }
@@ -14,11 +14,11 @@ header .header-box {
 	width: 90%;
 	margin: 0 auto;
 	text-align: center;
-	border: 0 solid rgba(43,237,230,0.4);
+	/* border: 0 solid rgba(43,237,230,0.4);
 	border-width: 1px 0;
 	position: relative;
 	overflow: hidden;
-	transition: 0.2s;
+	transition: 0.2s; */
 }
 header .header-box span {
 	position: absolute;
@@ -29,30 +29,30 @@ header .header-box span:nth-child(1) {
 	left: -100%;
 	width: 100%;
 	height: 2px;
-	background: linear-gradient(90deg, transparent, #aafffc);
+	background: linear-gradient(90deg, transparent, #A7FF83);
 }
 header .header-box:hover span:nth-child(1) {
 	left: 100%;
-	transition: 1s;
+	/* transition: 1s; */
 }
 header .header-box span:nth-child(3) {
 	bottom: 0;
 	right: -100%;
 	width: 100%;
 	height: 2px;
-	background: linear-gradient(270deg, transparent, #aafffc);
+	background: linear-gradient(270deg, transparent, #A7FF83);
 }
 header .header-box:hover span:nth-child(3) {
 	right: 100%;
-	transition: 1s;
-	transition-delay: 0.5s;
+	/* transition: 1s;
+	transition-delay: 0.5s; */
 }
 header .header-box span:nth-child(2) {
 	top: -100%;
 	right: 0;
 	width: 2px;
 	height: 100%;
-	background: linear-gradient(180deg, transparent, #aafffc);
+	background: linear-gradient(180deg, transparent, #A7FF83);
 }
 header .header-box:hover span:nth-child(2) {
 	top: 100%;
@@ -64,7 +64,7 @@ header .header-box span:nth-child(4) {
 	left: 0;
 	width: 2px;
 	height: 100%;
-	background: linear-gradient(360deg, transparent, #aafffc);
+	background: linear-gradient(360deg, transparent, #A7FF83);
 }
 header .header-box:hover span:nth-child(4) {
 	bottom: 100%;
@@ -116,15 +116,15 @@ label {
 	border-radius: .25rem;
 	font-size: 1rem;
 	display: block;
-	background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 100%);
-	border: 1px solid rgba(43,237,230,0.7);
-	color: #aafffc;
+	background:linear-gradient(to bottom, rgba(43,237,230,0.1) 0%, rgba(43,237,230,0.2) 100%);
+	border: 1px solid #178978;
+	color: #A7FF83;
 	padding: .5rem 1rem;
 }
 .green-field {
 	background: linear-gradient(to bottom, rgba(79,227,139,0.1) 0%, rgba(79,227,139,0.2) 100%);
-	border: 1px solid #4fe38b;
-	color: #4fe38b;
+	border: 1px solid #178978;
+	color: #A7FF83;
 	font-weight: bold;
 	padding: .5rem 1rem;
 }
@@ -141,9 +141,9 @@ label {
 	min-width: 40%;
 	max-width: 90%;
 	background: linear-gradient(to bottom, rgba(43,237,230,0.1) 0%, rgba(43,237,230,0.2) 100%);
-	border: 1px solid #2bede6;
+	border: 1px solid #178978;
 	box-shadow: none;
-	color: #aafffc;
+	color: #A7FF83;
 	font-size: 15px;
 	outline: 0;
 	height: 10vh;
@@ -162,19 +162,19 @@ button {
 	text-transform: uppercase;
 	vertical-align: baseline;
 	background: linear-gradient(to bottom, rgba(43,237,230,0.05) 0%, rgba(43,237,230,0.1) 100%);
-	border-color: #2bede6;
-	color: #2bede6;
+	border-color: #178978;
+	color: #A7FF83;
 	text-decoration: none;
 	display: inline-block;
 	font-weight: bold;
-	border: 1px solid #2bede6;
+	border: 1px solid #178978;
 	border-radius: .25rem;
 	text-align: center;
 	font-family: inherit;
 }
 button:hover {
 	background: linear-gradient(to bottom, rgba(43,237,230,0.1) 0%, rgba(43,237,230,0.2) 100%);
-	box-shadow: 0 0 5px #2bede6, 0 0 20px #2bede6, 0 0 40px #2bede6;
+	/* box-shadow: 0 0 5px #A7FF83, 0 0 20px #A7FF83, 0 0 40px #A7FF83; */
 }
 .modal {
 	background: repeating-linear-gradient(-45deg, rgba(170,170,170,0) 0px, rgba(170,170,170,0) 20px, rgba(170,170,170,0.1) 20px, rgba(170,170,170,0.1) 40px);
@@ -188,24 +188,24 @@ button:hover {
 }
 .modal-content {
 	padding: 20px;
-	border: 1px solid #2bede6;
+	border: 1px solid #A7FF83;
 	position: relative;
 	width: 80%;
 	height: 85%;
 	background: rgba(0,0,0,0.9);
 	margin: 2.5% auto;
-	color: #aafffc;
+	color: #A7FF83;
 }
 .close {
 	margin-top: -18px;
-	color: #2bede6;
+	color: #A7FF83;
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
 }
 .close:hover,
 .close:focus {
-	color: #aafffc;
+	color: #A7FF83;
 	text-decoration: none;
 	cursor: pointer;
 }

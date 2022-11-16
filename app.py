@@ -1,6 +1,6 @@
 import time
 import asyncio
-from main import *
+from ddos import *
 from datetime import datetime
 from quart import Quart, websocket, request, render_template
 
@@ -24,11 +24,11 @@ async def WS_receiver():
             if sniffer.flag:
                 await sniffer.WEBSOCKET.send('LOG::Already Running')
             else:
-                await sniffer.WEBSOCKET.send(f'LOG::Started Sniffer @ {str(datetime.now()).split(".")[0]}')
+                await sniffer.WEBSOCKET.send(f'LOG::Started @ {str(datetime.now()).split(".")[0]}')
                 sniffer.start()
         elif data == 'CMD::STOP':
             if sniffer.flag:
-                await sniffer.WEBSOCKET.send(f'LOG::Stopped Sniffer @ {str(datetime.now()).split(".")[0]}')
+                await sniffer.WEBSOCKET.send(f'LOG::Stopped @ {str(datetime.now()).split(".")[0]}')
                 sniffer.stop()
             else:
                 await sniffer.WEBSOCKET.send('LOG::Already Stopped')

@@ -5,17 +5,10 @@ import threading
 from scapy.all import *
 from queue import Queue
 
-banner = '''-----------------------
-DDOS detection
------------------------
-'''
-
-
 class SniffnDetect():
     def __init__(self):
         self.INTERFACE = conf.iface
-        self.MY_IP = [x[4] for x in conf.route.routes if x[2]
-                      != '0.0.0.0' and x[3] == self.INTERFACE][0]
+        self.MY_IP = [x[4] for x in conf.route.routes if x[2]!= '0.0.0.0' and x[3] == self.INTERFACE][0]
         self.MY_MAC = get_if_hwaddr(self.INTERFACE)
         self.WEBSOCKET = None
         self.PACKETS_QUEUE = Queue()
@@ -42,14 +35,20 @@ class SniffnDetect():
             self.PACKETS_QUEUE.task_done()
 
     def check_avg_time(self, activities):
-        return True
+        time = 0
+        c = -1
+        while c > -21:
+            time += activities[c][0] - activities[c-1][0]
+            c -= 1
+        time /= len(activities)
+        return (time < 2 and self.RECENT_ACTIVITIES[-1][0] - activities[-1][0] < 4)
 
     def find_attackers(self, category):
         data = []
         for mac in self.FILTERED_ACTIVITIES[category]['attacker-mac']:
-            data.append(
-                f"({self.MAC_TABLE[mac]}, {mac})" if mac in self.MAC_TABLE else f"(Unknown IP, {mac})")
+            data.append(f"({mac})")
         return category + ' Attackers :<br>' + "<br>".join(data) + '<br><br>'
+    
 
     def set_flags(self):
         for category in self.FILTERED_ACTIVITIES:
@@ -58,7 +57,7 @@ class SniffnDetect():
                     self.FILTERED_ACTIVITIES[category]['activities'])
                 if self.FILTERED_ACTIVITIES[category]['flag']:
                     self.FILTERED_ACTIVITIES[category]['attacker-mac'] = list(
-                        set([i[3] for i in self.FILTERED_ACTIVITIES[category]['activities']]))
+                        set([i[1] for i in self.FILTERED_ACTIVITIES[category]['activities']]))
 
     def analyze_packet(self, pkt):
         src_ip, dst_ip, src_port, dst_port, tcp_flags, icmp_type = None, None, None, None, None, None
@@ -72,9 +71,13 @@ class SniffnDetect():
                 self.FILTERED_ACTIVITIES[category]['activities'] = self.FILTERED_ACTIVITIES[category]['activities'][-30:]
 
         self.set_flags()
+        if Ether in pkt:
+            src_mac = pkt[Ether].src
+            dst_mac = pkt[Ether].dst
+        else :
+            dst_mac = None
+            src_mac = None
 
-        src_mac = pkt[Ether].src if Ether in pkt else None
-        dst_mac = pkt[Ether].dst if Ether in pkt else None
 
         if IP in pkt:
             src_ip = pkt[IP].src
@@ -97,12 +100,7 @@ class SniffnDetect():
             # 8 for echo-request and 0 for echo-reply
             icmp_type = pkt[ICMP].type
 
-        if ARP in pkt and pkt[ARP].op in (1, 2):
-            protocol.append("ARP")
-            if pkt[ARP].hwsrc in self.MAC_TABLE.keys() and self.MAC_TABLE[pkt[ARP].hwsrc] != pkt[ARP].psrc:
-                self.MAC_TABLE[pkt[ARP].hwsrc] = pkt[ARP].psrc
-            if pkt[ARP].hwsrc not in self.MAC_TABLE.keys():
-                self.MAC_TABLE[pkt[ARP].hwsrc] = pkt[ARP].psrc
+        
 
         load_len = len(pkt[Raw].load) if Raw in pkt else None
 
@@ -111,24 +109,24 @@ class SniffnDetect():
         if ICMP in pkt:
             if src_ip == self.MY_IP and src_mac != self.MY_MAC:
                 self.FILTERED_ACTIVITIES['ICMP-SMURF']['activities'].append([
-                                                                            pkt.time, ])
+                                                                            pkt.time, src_mac,src_ip])
                 attack_type = 'ICMP-SMURF PACKET'
 
-            if load_len and load_len > 1024:
+            if load_len and load_len > 1470:
                 self.FILTERED_ACTIVITIES['ICMP-POD']['activities'].append([
-                                                                          pkt.time, ])
+                                                                          pkt.time, src_mac,src_ip])
                 attack_type = 'ICMP-PoD PACKET'
 
         if dst_ip == self.MY_IP:
             if TCP in pkt:
                 if tcp_flags == "S":
                     self.FILTERED_ACTIVITIES['TCP-SYN']['activities'].append([
-                                                                             pkt.time, ])
+                                                                             pkt.time, src_mac,src_ip])
                     attack_type = 'TCP-SYN PACKET'
 
                 elif tcp_flags == "SA":
                     self.FILTERED_ACTIVITIES['TCP-SYNACK']['activities'].append([
-                                                                                pkt.time, ])
+                                                                                pkt.time, src_mac,src_ip])
                     attack_type = 'TCP-SYNACK PACKET'
 
         self.RECENT_ACTIVITIES.append(

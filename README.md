@@ -1,6 +1,8 @@
 # DDOS attack and detection
 Hping3, SniffnDetect and BYOB demonstration
 
+This demonstration was a part of graded evalutation for the Course Computer Networks, TY Computer Engineering, COEP
+
 
 ## 1) DDOS attack
 ```sh
